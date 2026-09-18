@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#0A2049]/95 backdrop-blur-md border-b border-white/10 shadow-sm transition-all duration-300">
+    <nav className="sticky top-0 z-50 w-full bg-[#0A2049] backdrop-blur-md border-b border-white/10 shadow-sm transition-all duration-300">
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
         
         {/* Logo Text (Image Removed) */}

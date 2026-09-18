@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function Home() {
   return (
@@ -358,6 +359,8 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      {/* FLOATING WHATSAPP BUTTON */}
+      <WhatsAppButton />
     </div>
   );
 }

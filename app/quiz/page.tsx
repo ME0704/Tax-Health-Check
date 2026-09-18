@@ -2,393 +2,500 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import WhatsAppButton from "@/components/WhatsAppButton";
+
+// Legal constants (FY2026/27)
+const CURRENCY_POINT = 20000;
+const VAT_THRESHOLD = 150000000;
+
+function presumptiveTax(T: number) {
+  if (T <= 10000000) return 0;
+  if (T <= 30000000) return 0.004 * (T - 10000000);
+  if (T <= 50000000) return 80000 + 0.005 * (T - 30000000);
+  if (T <= 80000000) return 180000 + 0.006 * (T - 50000000);
+  if (T <= 150000000) return 360000 + 0.007 * (T - 80000000);
+  return null;
+}
+
+function corporateTax(P: number) { return P * 0.30; }
+
+function individualTax(P: number) {
+  if (P <= 4020000) return 0;
+  if (P <= 4920000) return 0.20 * (P - 4020000);
+  if (P <= 5820000) return 180000 + 0.25 * (P - 4920000);
+  if (P <= 120000000) return 405000 + 0.30 * (P - 5820000);
+  return 34659000 + 0.40 * (P - 120000000);
+}
+
+function lateFilingPenalty(annualTax: number, monthsLate: number) {
+  const monthly = Math.max(annualTax * 0.02, 10 * CURRENCY_POINT);
+  return monthly * Math.max(0, monthsLate);
+}
+
+function interestOnUnpaid(annualTax: number, monthsLate: number, penaltyAlreadyAccrued: number) {
+  const raw = annualTax * 0.02 * Math.max(0, monthsLate);
+  return Math.min(raw, annualTax + penaltyAlreadyAccrued);
+}
+
+function recordsPenalty(annualTax: number, years: number) { 
+  return annualTax * 2 * Math.max(0, years); 
+}
+
+function unregisteredPenalty(annualTax: number, months: number) {
+  const periodTax = annualTax * (Math.max(0, months) / 12);
+  return Math.max(periodTax * 2, 50 * CURRENCY_POINT);
+}
 
 export default function QuizPage() {
-  const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [showResults, setShowResults] = useState(false);
-  const [copyFeedback, setCopyFeedback] = useState("");
+  const [step, setStep] = useState(1);
+  const [businessType, setBusinessType] = useState<"individual" | "company">("individual");
+  const [turnover, setTurnover] = useState<string>("");
+  const [isProfessional, setIsProfessional] = useState(false);
+  const [profit, setProfit] = useState<string>("");
+  const [isVatRegistered, setIsVatRegistered] = useState(false);
 
-  const [formData, setFormData] = useState({
-    filingStatus: 2,
-    records: 2,
-    turnover: 50,
-    penalties: 0,
-    deductions: 2,
-  });
+  // Risk Checklist State
+  const [toggleLate, setToggleLate] = useState(false);
+  const [monthsLate, setMonthsLate] = useState<string>("");
 
-  const totalQuestions = 5;
+  const [toggleRecords, setToggleRecords] = useState(false);
+  const [yearsRecords, setYearsRecords] = useState<string>("");
 
-  const handleToggle = (field: keyof typeof formData, value: number) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  const [toggleUnregistered, setToggleUnregistered] = useState(false);
+  const [monthsUnregistered, setMonthsUnregistered] = useState<string>("");
 
-  const handleNext = () => {
-    if (currentQuestion < totalQuestions) {
-      setCurrentQuestion((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  const [toggleFine, setToggleFine] = useState(false);
+  const [fineAmount, setFineAmount] = useState<string>("");
+
+  const [profile, setProfile] = useState<any>(null);
+  const [results, setResults] = useState<any>(null);
+  const [copyFeedback, setCopyFeedback] = useState("Copy number");
+
+  const numTurnover = parseFloat(turnover) || 0;
+  const numProfit = parseFloat(profit) || 0;
+  const needsProfit = isProfessional || numTurnover > VAT_THRESHOLD;
+  const isFormValid = numTurnover > 0 && (!needsProfit || numProfit > 0);
+  const showVatRow = numTurnover >= 100000000;
+
+  const computeProfile = () => {
+    const T = numTurnover;
+    const P = numProfit;
+    let regime, annualTax, lawTag;
+    const presumptiveEligible = !isProfessional && T <= VAT_THRESHOLD;
+
+    if (presumptiveEligible) {
+      regime = "Presumptive tax (small business)";
+      annualTax = presumptiveTax(T) || 0;
+      lawTag = "Income Tax Act, Second Schedule";
+    } else if (businessType === "company") {
+      regime = "Standard company assessment";
+      annualTax = corporateTax(P);
+      lawTag = "Income Tax Act — 30% corporate rate";
     } else {
-      setShowResults(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      regime = "Standard individual assessment";
+      annualTax = individualTax(P);
+      lawTag = "Income Tax Act — graduated rates";
     }
+
+    const vatRequired = T > VAT_THRESHOLD;
+    const vatGap = vatRequired && !isVatRegistered;
+
+    return { T, P, regime, annualTax, lawTag, vatRequired, vatGap };
   };
 
-  const handlePrev = () => {
-    if (currentQuestion > 1) {
-      setCurrentQuestion((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const restartQuiz = () => {
-    setCurrentQuestion(1);
-    setShowResults(false);
+  const handleShowStep2 = () => {
+    const computed = computeProfile();
+    setProfile(computed);
+    setStep(2);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // --- LOGIC CALCULATIONS ---
-  let score = 100;
-  if (formData.filingStatus === 0) score -= 35;
-  else if (formData.filingStatus === 1) score -= 20;
-  if (formData.records === 0) score -= 30;
-  else if (formData.records === 1) score -= 15;
-  if (formData.penalties === 1) score -= 15;
-  else if (formData.penalties === 2) score -= 25;
-  if (formData.deductions === 0) score -= 20;
-  else if (formData.deductions === 1) score -= 10;
-  score = Math.max(0, score);
+  const handleCalculate = () => {
+    const p = profile;
+    const insights: any[] = [];
+    let riskTotal = 0;
+    let oldestFineFlag = false;
 
-  let opportunity = formData.turnover * 0.15;
-  if (formData.deductions === 0) opportunity += formData.turnover * 0.12;
-  else if (formData.deductions === 1) opportunity += formData.turnover * 0.06;
-  if (formData.records === 0) opportunity += formData.turnover * 0.08;
-  else if (formData.records === 1) opportunity += formData.turnover * 0.04;
+    if (toggleLate) {
+      const months = parseFloat(monthsLate) || 0;
+      const penalty = lateFilingPenalty(p.annualTax, months);
+      const interest = interestOnUnpaid(p.annualTax, months, penalty);
+      const sub = penalty + interest;
+      riskTotal += sub;
+      insights.push({
+        problem: "Late filing",
+        cost: sub,
+        fix: `${months} month(s) overdue: penalty is the higher of 2% of tax due per month or UGX 200,000/month, plus 2%/month interest on the unpaid tax.`,
+        cite: "Tax Procedures Code Act, s.56"
+      });
+    }
 
-  let riskLevel = "Healthy";
-  let insight = "";
-  if (score >= 75) {
-    riskLevel = "Healthy";
-    insight = "Your business is in good tax health. Focus on maintaining compliance and exploring optimization opportunities.";
-  } else if (score >= 50) {
-    riskLevel = "At Risk";
-    insight = "There are gaps in your tax setup. Addressing these could save you significantly and reduce penalty risk.";
-  } else if (score >= 25) {
-    riskLevel = "High Risk";
-    insight = "Your tax position needs urgent attention. Quick action now prevents costly penalties later.";
-  } else {
-    riskLevel = "Critical";
-    insight = "Critical issues found. Professional restructuring is essential to protect your business.";
-  }
+    if (toggleRecords) {
+      const years = parseFloat(yearsRecords) || 0;
+      const sub = recordsPenalty(p.annualTax, years);
+      riskTotal += sub;
+      insights.push({
+        problem: "Poor records",
+        cost: sub,
+        fix: "Deliberately failing to keep proper records carries a penalty of double the tax payable for each affected year.",
+        cite: "Tax Procedures Code Act, s.57"
+      });
+    }
 
-  const generateResultText = () => {
-    const statusText = ["Not filing", "Filing late", "Filing on time"][formData.filingStatus];
-    const recordsText = ["Messy or missing", "Partially organized", "Well maintained"][formData.records];
-    const penaltiesText = ["Never", "Once or twice", "Multiple times"][formData.penalties];
-    const deductionsText = ["Never reviewed", "Partially claimed", "Fully optimized"][formData.deductions];
+    if (toggleUnregistered) {
+      const months = parseFloat(monthsUnregistered) || 0;
+      const sub = unregisteredPenalty(p.annualTax, months);
+      riskTotal += sub;
+      insights.push({
+        problem: "Never registered",
+        cost: sub,
+        fix: "Operating unregistered carries a penalty of double the tax due for that period, or UGX 1,000,000, whichever is higher.",
+        cite: "Tax Procedures Code Act, s.61"
+      });
+    }
 
-    let text = `TAX HEALTH CHECK REPORT\n====================================\n\n`;
-    text += `YOUR TAX HEALTH SCORE: ${score}%\nRisk Level: ${riskLevel}\nTax Savings Potential: UGX ${Math.round(opportunity)}m\n\n`;
-    text += `====================================\nYOUR DIAGNOSIS\n====================================\n\n`;
-    text += `Filing Status: ${statusText}\nRecord Keeping: ${recordsText}\nAnnual Turnover: UGX ${formData.turnover}m\nTax Penalties: ${penaltiesText}\nDeduction Optimization: ${deductionsText}\n\n`;
-    text += `====================================\nKEY INSIGHTS\n====================================\n\n${insight}\n\n`;
-    text += `====================================\nYOUR ACTION PLAN\n====================================\n\n`;
+    if (toggleFine) {
+      const amount = parseFloat(fineAmount) || 0;
+      riskTotal += amount;
+      oldestFineFlag = amount > 0;
+      insights.push({
+        problem: "Existing fine or demand",
+        cost: amount,
+        fix: "This is already on record with URA and accruing interest until it's resolved.",
+        cite: "—"
+      });
+    }
 
-    if (formData.filingStatus < 2) text += `1. PRIORITY: Get Current with URA\n   ACTION THIS WEEK: Contact a tax professional to review what you owe.\n\n`;
-    if (formData.records < 2) text += `2. PRIORITY: Organize Your Books\n   ACTION THIS WEEK: Start collecting all receipts and bank statements.\n\n`;
-    if (formData.penalties > 0) text += `3. PRIORITY: Review Past Penalties\n   ACTION THIS WEEK: Request a penalty review meeting with URA.\n\n`;
-    if (formData.deductions < 2) text += `4. PRIORITY: Claim All Allowable Deductions\n   ACTION THIS WEEK: Audit your expenses with a tax specialist.\n\n`;
-    text += `5. NEXT STEP: Get Your Personal Tax Blueprint\n   Book a strategy session to move from confusion to compliance.\n\n`;
-    text += `====================================\nGenerated: ${new Date().toLocaleDateString()}\n====================================`;
-    return text;
+    if (p.vatGap) {
+      const floor = 1000000;
+      riskTotal += floor;
+      insights.push({
+        problem: "VAT registration gap",
+        cost: floor,
+        fix: "Turnover is above UGX 150,000,000 — VAT registration is required. Operating unregistered risks at least UGX 1,000,000, and possibly a full VAT assessment on past sales.",
+        cite: "VAT Act; Tax Procedures Code Act, s.61"
+      });
+    }
+
+    setResults({
+      riskTotal,
+      baseTax: p.annualTax,
+      regime: p.regime,
+      totalExposure: riskTotal + p.annualTax,
+      insights,
+      oldestFineFlag
+    });
+
+    setStep(3);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(generateResultText()).then(() => {
-      setCopyFeedback("✓ Copied to clipboard!");
-      setTimeout(() => setCopyFeedback(""), 3000);
+  const handleReset = () => {
+    setTurnover("");
+    setProfit("");
+    setIsProfessional(false);
+    setIsVatRegistered(false);
+    setBusinessType("individual");
+    setToggleLate(false);
+    setMonthsLate("");
+    setToggleRecords(false);
+    setYearsRecords("");
+    setToggleUnregistered(false);
+    setMonthsUnregistered("");
+    setToggleFine(false);
+    setFineAmount("");
+    setStep(1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const fmt = (n: number) => "UGX " + Math.round(n).toLocaleString();
+
+  const copyNumber = () => {
+    navigator.clipboard?.writeText("+256 761 109 667").then(() => {
+      setCopyFeedback("Copied ✓");
+      setTimeout(() => setCopyFeedback("Copy number"), 1500);
     });
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col selection:bg-[#DDB56A]/30 selection:text-[#0A2049]">
+    <div className="min-h-screen bg-[#FCF9F4] font-sans text-[#22303F] flex flex-col selection:bg-[#DDB56A]/30 selection:text-[#0D2A5C]">
       
       {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 w-full bg-[#0A2049]/95 backdrop-blur-md border-b border-white/10 shadow-sm transition-all duration-300">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <img src="/logo.jpeg" alt="Tax Health Check Logo" className="w-12 h-12 object-cover rounded shadow-sm group-hover:scale-105 transition-transform" />
-            <span className="text-xl font-bold text-white tracking-tight hidden sm:block">
-              Tax Health <span className="text-[#DDB56A]">Check</span>
-            </span>
-          </Link>
-          <div className="hidden md:flex items-center gap-8 font-semibold text-sm">
-            <Link href="/quiz" className="text-[#DDB56A] transition-colors duration-300">
-              Free Tax Risk Check
-            </Link>
-            <Link 
-              href="/#book" 
-              className="bg-[#DDB56A] hover:bg-[#c9a358] text-[#0A2049] px-6 py-2.5 rounded-md transition-all duration-300 shadow-[0_4px_14px_0_rgba(221,181,106,0.39)]"
-            >
-              Book a Call
-            </Link>
-          </div>
+      <Navbar />
+
+      <div className="max-w-lg mx-auto px-4 py-10 flex-grow w-full">
+
+        <div className="text-center mb-8">
+          <div className="text-xs uppercase tracking-widest text-[#AE8340] font-bold mb-2">Free · 2 minutes</div>
+          <h1 className="text-3xl font-serif text-[#0D2A5C] mb-2 font-semibold">Tax Risk Check</h1>
+          <p className="text-sm text-[#5C6875]">Based on the Income Tax Act, VAT Act and Tax Procedures Code Act.</p>
         </div>
-      </nav>
 
-      {/* MAIN QUIZ CONTENT */}
-      <main className="flex-grow py-16 px-4 md:px-8">
-        <div className="max-w-2xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="inline-block bg-[#DDB56A]/20 text-[#0A2049] border border-[#DDB56A]/50 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider mb-4">
-              DIAGNOSTIC TOOL
-            </div>
-            <h1 className="text-4xl font-extrabold text-[#0A2049] mb-3">Your Tax Diagnosis</h1>
-            <p className="text-base text-slate-500">Answer 5 quick questions and get your personalized report.</p>
-          </div>
+        {/* STEP 1: BUSINESS PROFILE */}
+        {step === 1 && (
+          <div className="bg-white border border-[#0D2A5C]/10 rounded-2xl p-6 shadow-xl mb-6">
+            <div className="text-xs uppercase font-bold text-[#5C6875] tracking-wider mb-4">About your business</div>
 
-          {!showResults ? (
-            /* QUIZ SECTION */
-            <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-slate-200">
-              {/* Progress Bar */}
-              <div className="mb-10">
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden mb-3">
-                  <div 
-                    className="h-full bg-[#0A2049] transition-all duration-500 ease-out" 
-                    style={{ width: `${(currentQuestion / totalQuestions) * 100}%` }}
-                  />
-                </div>
-                <div className="text-xs text-slate-400 text-center font-bold tracking-widest uppercase">
-                  Question {currentQuestion} of {totalQuestions}
-                </div>
-              </div>
-
-              {/* Question 1 */}
-              {currentQuestion === 1 && (
-                <div className="animate-in fade-in slide-in-from-right-8 duration-300">
-                  <label className="block text-2xl font-bold text-[#0A2049] mb-2">1. Filing Status</label>
-                  <p className="text-base text-slate-500 mb-8">Are you currently filing with URA?</p>
-                  <div className="flex flex-col gap-4">
-                    {[
-                      { label: "Not filing", val: 0 },
-                      { label: "Filing late", val: 1 },
-                      { label: "Filing on time", val: 2 }
-                    ].map((opt) => (
-                      <button
-                        key={opt.val}
-                        onClick={() => handleToggle("filingStatus", opt.val)}
-                        className={`p-5 text-left font-bold rounded-2xl border-2 transition-all duration-300 text-lg ${
-                          formData.filingStatus === opt.val 
-                            ? "border-[#0A2049] bg-[#0A2049] text-white shadow-md scale-[1.01]" 
-                            : "border-slate-200 bg-white text-slate-700 hover:border-[#DDB56A] hover:bg-[#DDB56A]/5"
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Question 2 */}
-              {currentQuestion === 2 && (
-                <div className="animate-in fade-in slide-in-from-right-8 duration-300">
-                  <label className="block text-2xl font-bold text-[#0A2049] mb-2">2. Record Keeping</label>
-                  <p className="text-base text-slate-500 mb-8">How confident are your books and receipts?</p>
-                  <div className="flex flex-col gap-4">
-                    {[
-                      { label: "Messy or missing", val: 0 },
-                      { label: "Partially organized", val: 1 },
-                      { label: "Well maintained", val: 2 }
-                    ].map((opt) => (
-                      <button
-                        key={opt.val}
-                        onClick={() => handleToggle("records", opt.val)}
-                        className={`p-5 text-left font-bold rounded-2xl border-2 transition-all duration-300 text-lg ${
-                          formData.records === opt.val 
-                            ? "border-[#0A2049] bg-[#0A2049] text-white shadow-md scale-[1.01]" 
-                            : "border-slate-200 bg-white text-slate-700 hover:border-[#DDB56A] hover:bg-[#DDB56A]/5"
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Question 3 */}
-              {currentQuestion === 3 && (
-                <div className="animate-in fade-in slide-in-from-right-8 duration-300">
-                  <label className="block text-2xl font-bold text-[#0A2049] mb-2">3. Annual Turnover</label>
-                  <p className="text-base text-slate-500 mb-10">Estimate your yearly business revenue in UGX.</p>
-                  <input 
-                    type="range" 
-                    min="0" max="500" step="10" 
-                    value={formData.turnover}
-                    onChange={(e) => handleToggle("turnover", parseInt(e.target.value))}
-                    className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#DDB56A] mb-8"
-                  />
-                  <div className="text-center p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                    <span className="text-4xl font-extrabold text-[#0A2049]">{formData.turnover}</span>
-                    <span className="text-lg font-bold text-slate-500 ml-2">million UGX/year</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Question 4 */}
-              {currentQuestion === 4 && (
-                <div className="animate-in fade-in slide-in-from-right-8 duration-300">
-                  <label className="block text-2xl font-bold text-[#0A2049] mb-2">4. Tax Penalties</label>
-                  <p className="text-base text-slate-500 mb-8">Have you been fined or penalized by URA?</p>
-                  <div className="flex flex-col gap-4">
-                    {[
-                      { label: "Never", val: 0 },
-                      { label: "Once or twice", val: 1 },
-                      { label: "Multiple times", val: 2 }
-                    ].map((opt) => (
-                      <button
-                        key={opt.val}
-                        onClick={() => handleToggle("penalties", opt.val)}
-                        className={`p-5 text-left font-bold rounded-2xl border-2 transition-all duration-300 text-lg ${
-                          formData.penalties === opt.val 
-                            ? "border-[#0A2049] bg-[#0A2049] text-white shadow-md scale-[1.01]" 
-                            : "border-slate-200 bg-white text-slate-700 hover:border-[#DDB56A] hover:bg-[#DDB56A]/5"
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Question 5 */}
-              {currentQuestion === 5 && (
-                <div className="animate-in fade-in slide-in-from-right-8 duration-300">
-                  <label className="block text-2xl font-bold text-[#0A2049] mb-2">5. Deduction Optimization</label>
-                  <p className="text-base text-slate-500 mb-8">Do you claim all allowable business deductions?</p>
-                  <div className="flex flex-col gap-4">
-                    {[
-                      { label: "Never reviewed", val: 0 },
-                      { label: "Partially claimed", val: 1 },
-                      { label: "Fully optimized", val: 2 }
-                    ].map((opt) => (
-                      <button
-                        key={opt.val}
-                        onClick={() => handleToggle("deductions", opt.val)}
-                        className={`p-5 text-left font-bold rounded-2xl border-2 transition-all duration-300 text-lg ${
-                          formData.deductions === opt.val 
-                            ? "border-[#0A2049] bg-[#0A2049] text-white shadow-md scale-[1.01]" 
-                            : "border-slate-200 bg-white text-slate-700 hover:border-[#DDB56A] hover:bg-[#DDB56A]/5"
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Controls */}
-              <div className="flex gap-4 mt-12">
-                {currentQuestion > 1 && (
-                  <button onClick={handlePrev} className="flex-1 py-5 px-6 bg-slate-100 text-slate-600 font-bold rounded-2xl hover:bg-slate-200 transition-colors text-lg">
-                    Back
-                  </button>
-                )}
-                <button onClick={handleNext} className="flex-1 py-5 px-6 bg-[#DDB56A] text-[#0A2049] font-bold rounded-2xl hover:bg-[#c9a358] transition-colors shadow-lg shadow-[#DDB56A]/20 text-lg">
-                  {currentQuestion === totalQuestions ? "Get Your Diagnosis" : "Next Question"}
+            <div className="mb-5">
+              <label className="block text-sm font-bold text-[#0D2A5C] mb-2">What kind of business is this?</label>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setBusinessType("individual")}
+                  className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm border transition-all cursor-pointer ${
+                    businessType === "individual" ? "bg-[#0D2A5C] text-white border-[#0D2A5C]" : "bg-[#FCF9F4] text-[#5C6875] border-[#E4DCCD]"
+                  }`}
+                >
+                  Sole trader
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setBusinessType("company")}
+                  className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm border transition-all cursor-pointer ${
+                    businessType === "company" ? "bg-[#0D2A5C] text-white border-[#0D2A5C]" : "bg-[#FCF9F4] text-[#5C6875] border-[#E4DCCD]"
+                  }`}
+                >
+                  Company
                 </button>
               </div>
             </div>
-          ) : (
-            /* RESULTS SECTION */
-            <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
-              
-              {/* Score Card */}
-              <div className="bg-[#0A2049] text-white p-10 rounded-3xl shadow-2xl text-center mb-8 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5 mix-blend-overlay pointer-events-none"></div>
-                <div className="text-sm font-bold uppercase tracking-widest text-[#DDB56A] mb-4">Your Tax Health Score</div>
-                <div className="text-7xl font-extrabold mb-6">{score}%</div>
-                <div className="text-base text-slate-300 leading-relaxed max-w-lg mx-auto">{insight}</div>
-              </div>
 
-              {/* Metrics */}
-              <div className="grid grid-cols-2 gap-6 mb-10">
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-b-8 border-b-[#0A2049]">
-                  <div className="text-3xl font-extrabold text-[#0A2049]">{riskLevel}</div>
-                  <div className="text-xs font-bold text-slate-400 mt-2 uppercase tracking-wider">Current Risk</div>
+            <div className="mb-5">
+              <label className="block text-sm font-bold text-[#0D2A5C] mb-2">Annual turnover — gross sales (UGX)</label>
+              <input 
+                type="number" 
+                value={turnover}
+                onChange={(e) => setTurnover(e.target.value)}
+                placeholder="e.g. 60,000,000" 
+                min="0"
+                className="w-full bg-[#FCF9F4] border border-[#E4DCCD] rounded-xl px-4 py-3 text-base text-[#22303F] focus:outline-none focus:border-[#DDB56A] focus:ring-2 focus:ring-[#DDB56A]/20"
+              />
+              <p className="text-xs text-[#5C6875] mt-1.5">Total money in before any expenses.</p>
+            </div>
+
+            <div className="flex items-center justify-between py-3 border-t border-[#F5EFE4]">
+              <div>
+                <div className="text-sm font-bold text-[#0D2A5C]">Professional / regulated service?</div>
+                <div className="text-xs text-[#5C6875]">Law, medicine, engineering, accountancy, architecture, etc.</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-none">
+                <input type="checkbox" checked={isProfessional} onChange={(e) => setIsProfessional(e.target.checked)} className="sr-only peer" />
+                <div className="w-11 h-6 bg-[#E4DCCD] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0D2A5C]"></div>
+              </label>
+            </div>
+
+            {needsProfit && (
+              <div className="mb-5 mt-3 animate-in fade-in">
+                <label className="block text-sm font-bold text-[#0D2A5C] mb-2">Estimated annual net profit (UGX)</label>
+                <input 
+                  type="number" 
+                  value={profit}
+                  onChange={(e) => setProfit(e.target.value)}
+                  placeholder="e.g. 40,000,000" 
+                  min="0"
+                  className="w-full bg-[#FCF9F4] border border-[#E4DCCD] rounded-xl px-4 py-3 text-base text-[#22303F] focus:outline-none focus:border-[#DDB56A] focus:ring-2 focus:ring-[#DDB56A]/20"
+                />
+                <p className="text-xs text-[#5C6875] mt-1.5">Turnover minus business expenses.</p>
+              </div>
+            )}
+
+            {showVatRow && (
+              <div className="flex items-center justify-between py-3 border-t border-[#F5EFE4]">
+                <div>
+                  <div className="text-sm font-bold text-[#0D2A5C]">Already VAT registered?</div>
+                  <div className="text-xs text-[#5C6875]">Required once turnover passes UGX 150M</div>
                 </div>
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-b-8 border-b-[#DDB56A]">
-                  <div className="text-3xl font-extrabold text-[#0A2049]">UGX {Math.round(opportunity)}m</div>
-                  <div className="text-xs font-bold text-slate-400 mt-2 uppercase tracking-wider">Savings Potential</div>
+                <label className="relative inline-flex items-center cursor-pointer flex-none">
+                  <input type="checkbox" checked={isVatRegistered} onChange={(e) => setIsVatRegistered(e.target.checked)} className="sr-only peer" />
+                  <div className="w-11 h-6 bg-[#E4DCCD] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0D2A5C]"></div>
+                </label>
+              </div>
+            )}
+
+            <button 
+              type="button" 
+              onClick={handleShowStep2} 
+              disabled={!isFormValid}
+              className="w-full mt-6 bg-[#0D2A5C] text-white py-4 rounded-xl font-bold text-base hover:bg-[#0A2049] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-md"
+            >
+              See My Tax Profile
+            </button>
+          </div>
+        )}
+
+        {/* STEP 2: PROFILE SUMMARY + RISK CHECKLIST */}
+        {step === 2 && profile && (
+          <div className="bg-white border border-[#0D2A5C]/10 rounded-2xl p-6 shadow-xl mb-6 animate-in fade-in">
+            <div className="text-xs uppercase font-bold text-[#5C6875] tracking-wider mb-3">Your tax profile</div>
+            
+            <div className="bg-[#F5EFE4] rounded-xl p-4 mb-6">
+              <span className="inline-block bg-[#0D2A5C] text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{profile.regime}</span>
+              <div className="flex justify-between text-sm py-1 border-t border-[#0D2A5C]/10">
+                <span className="text-[#5C6875]">Est. annual tax</span>
+                <span className="font-bold text-[#0D2A5C]">{fmt(profile.annualTax)}</span>
+              </div>
+              <div className="flex justify-between text-sm py-1 border-t border-[#0D2A5C]/10">
+                <span className="text-[#5C6875]">Basis</span>
+                <span className="text-xs text-[#5C6875] font-semibold">{profile.lawTag}</span>
+              </div>
+              <div className="flex justify-between text-sm py-1 border-t border-[#0D2A5C]/10">
+                <span className="text-[#5C6875]">VAT (18%)</span>
+                <span className="font-bold text-[#0D2A5C]">{profile.vatRequired ? (profile.vatReg ? "Registered ✓" : "Required, not registered") : "Not required yet"}</span>
+              </div>
+            </div>
+
+            <div className="text-xs uppercase font-bold text-[#5C6875] tracking-wider mb-4">Any of these also true?</div>
+
+            {/* Late Filing */}
+            <div className="border-b border-[#F5EFE4] pb-4 mb-4">
+              <div className="flex items-start gap-3">
+                <input type="checkbox" checked={toggleLate} onChange={(e) => setToggleLate(e.target.checked)} className="w-5 h-5 mt-1 accent-[#0D2A5C] cursor-pointer" id="chkLate" />
+                <div className="flex-grow">
+                  <label htmlFor="chkLate" className="font-bold text-sm text-[#0D2A5C] cursor-pointer">Behind on filing a return</label>
+                  <p className="text-xs text-[#5C6875]">A return is overdue with URA right now.</p>
                 </div>
               </div>
+              {toggleLate && (
+                <div className="mt-3 ml-8">
+                  <label className="block text-xs text-[#5C6875] mb-1">How many months overdue?</label>
+                  <input type="number" value={monthsLate} onChange={(e) => setMonthsLate(e.target.value)} placeholder="e.g. 6" min="0" max="120" className="w-full bg-[#FCF9F4] border border-[#E4DCCD] rounded-lg px-3 py-2 text-sm" />
+                </div>
+              )}
+            </div>
 
-              {/* Action Plan */}
-              <div className="bg-white p-10 rounded-3xl shadow-sm border border-slate-200 mb-8">
-                <h3 className="text-2xl font-bold text-[#0A2049] mb-8 flex items-center gap-3">
-                  <svg className="w-6 h-6 text-[#DDB56A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                  Personalized Action Plan
-                </h3>
-                <div className="space-y-6">
-                  {formData.filingStatus < 2 && (
-                    <div className="border-b border-slate-100 pb-5">
-                      <h4 className="text-base font-bold text-[#0A2049] mb-1">Priority 1: Get Current with URA</h4>
-                      <p className="text-base text-slate-600">Filing late or not at all compounds penalties monthly. Contact a tax professional this week to review what you owe.</p>
-                    </div>
-                  )}
-                  {formData.records < 2 && (
-                    <div className="border-b border-slate-100 pb-5">
-                      <h4 className="text-base font-bold text-[#0A2049] mb-1">Priority 2: Organize Your Books</h4>
-                      <p className="text-base text-slate-600">Messy records trigger audits and penalties. Start collecting all 2024 receipts and bank statements this week.</p>
-                    </div>
-                  )}
-                  {formData.penalties > 0 && (
-                    <div className="border-b border-slate-100 pb-5">
-                      <h4 className="text-base font-bold text-[#0A2049] mb-1">Priority 3: Review Past Penalties</h4>
-                      <p className="text-base text-slate-600">Penalties are often negotiable if addressed early. Request a penalty review meeting with URA within the next 10 days.</p>
-                    </div>
-                  )}
-                  {formData.deductions < 2 && (
-                    <div className="border-b border-slate-100 pb-5">
-                      <h4 className="text-base font-bold text-[#0A2049] mb-1">Priority 4: Claim All Allowable Deductions</h4>
-                      <p className="text-base text-slate-600">Most businesses miss 10–20% in deductible expenses. Audit your expenses this week with a tax specialist.</p>
-                    </div>
-                  )}
+            {/* Records */}
+            <div className="border-b border-[#F5EFE4] pb-4 mb-4">
+              <div className="flex items-start gap-3">
+                <input type="checkbox" checked={toggleRecords} onChange={(e) => setToggleRecords(e.target.checked)} className="w-5 h-5 mt-1 accent-[#0D2A5C] cursor-pointer" id="chkRecords" />
+                <div className="flex-grow">
+                  <label htmlFor="chkRecords" className="font-bold text-sm text-[#0D2A5C] cursor-pointer">Records aren't properly kept</label>
+                  <p className="text-xs text-[#5C6875]">No reliable books — sales, expenses, receipts.</p>
+                </div>
+              </div>
+              {toggleRecords && (
+                <div className="mt-3 ml-8">
+                  <label className="block text-xs text-[#5C6875] mb-1">For how many years?</label>
+                  <input type="number" value={yearsRecords} onChange={(e) => setYearsRecords(e.target.value)} placeholder="e.g. 2" min="0" max="10" className="w-full bg-[#FCF9F4] border border-[#E4DCCD] rounded-lg px-3 py-2 text-sm" />
+                </div>
+              )}
+            </div>
+
+            {/* Unregistered */}
+            <div className="border-b border-[#F5EFE4] pb-4 mb-4">
+              <div className="flex items-start gap-3">
+                <input type="checkbox" checked={toggleUnregistered} onChange={(e) => setToggleUnregistered(e.target.checked)} className="w-5 h-5 mt-1 accent-[#0D2A5C] cursor-pointer" id="chkUnreg" />
+                <div className="flex-grow">
+                  <label htmlFor="chkUnreg" className="font-bold text-sm text-[#0D2A5C] cursor-pointer">Never registered with URA</label>
+                  <p className="text-xs text-[#5C6875]">No TIN, or trading without registering as required.</p>
+                </div>
+              </div>
+              {toggleUnregistered && (
+                <div className="mt-3 ml-8">
+                  <label className="block text-xs text-[#5C6875] mb-1">How many months operating like this?</label>
+                  <input type="number" value={monthsUnregistered} onChange={(e) => setMonthsUnregistered(e.target.value)} placeholder="e.g. 12" min="0" max="240" className="w-full bg-[#FCF9F4] border border-[#E4DCCD] rounded-lg px-3 py-2 text-sm" />
+                </div>
+              )}
+            </div>
+
+            {/* Existing Fine */}
+            <div className="pb-2 mb-4">
+              <div className="flex items-start gap-3">
+                <input type="checkbox" checked={toggleFine} onChange={(e) => setToggleFine(e.target.checked)} className="w-5 h-5 mt-1 accent-[#0D2A5C] cursor-pointer" id="chkFine" />
+                <div className="flex-grow">
+                  <label htmlFor="chkFine" className="font-bold text-sm text-[#0D2A5C] cursor-pointer">Already have a URA fine or demand</label>
+                  <p className="text-xs text-[#5C6875]">An assessment, penalty or demand notice.</p>
+                </div>
+              </div>
+              {toggleFine && (
+                <div className="mt-3 ml-8">
+                  <label className="block text-xs text-[#5C6875] mb-1">Amount on the notice (UGX)</label>
+                  <input type="number" value={fineAmount} onChange={(e) => setFineAmount(e.target.value)} placeholder="e.g. 3,000,000" min="0" className="w-full bg-[#FCF9F4] border border-[#E4DCCD] rounded-lg px-3 py-2 text-sm" />
+                </div>
+              )}
+            </div>
+
+            <button type="button" onClick={handleCalculate} className="w-full mt-6 bg-[#0D2A5C] text-white py-4 rounded-xl font-bold text-base hover:bg-[#0A2049] transition-all cursor-pointer shadow-md">
+              Calculate My Full Risk
+            </button>
+            <button type="button" onClick={() => setStep(1)} className="w-full mt-3 bg-transparent border border-[#E4DCCD] text-[#5C6875] py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all cursor-pointer">
+              ← Back
+            </button>
+          </div>
+        )}
+
+        {/* STEP 3: RESULTS */}
+        {step === 3 && results && (
+          <div className="bg-white border border-[#0D2A5C]/10 rounded-2xl p-6 shadow-xl mb-6 animate-in fade-in">
+            <div className="text-center pb-4">
+              <div className="text-xs uppercase tracking-wider text-[#5C6875] font-bold mb-2">Extra risk from compliance gaps</div>
+              <div className="text-4xl font-serif text-[#0D2A5C] font-bold mb-1">{fmt(results.riskTotal)}</div>
+              <p className="text-xs text-[#5C6875]">on top of the tax you'd owe anyway</p>
+            </div>
+
+            <div className="flex bg-[#F5EFE4] rounded-xl overflow-hidden mb-6">
+              <div className="flex-1 bg-white p-4 text-center border-r border-[#F5EFE4]">
+                <div className="text-base font-bold text-[#0D2A5C]">{fmt(results.baseTax)}</div>
+                <div className="text-[10px] text-[#5C6875] uppercase mt-1">Est. annual tax</div>
+              </div>
+              <div className="flex-1 bg-white p-4 text-center">
+                <div className="text-base font-bold text-[#0D2A5C]">{fmt(results.totalExposure)}</div>
+                <div className="text-[10px] text-[#5C6875] uppercase mt-1">Total if unresolved</div>
+              </div>
+            </div>
+
+            <div className="bg-[#F5EFE4] border-l-4 border-[#DDB56A] p-3 rounded-r-lg text-xs text-[#22303F] mb-6 leading-relaxed">
+              {results.insights.length === 0 ? (
+                `Based on what you've told us, your main obligation is the ${fmt(results.baseTax)} annual tax. No red flags flagged.`
+              ) : (
+                `Left unresolved, these compliance gaps add roughly ${fmt(results.riskTotal)} on top of your normal ${fmt(results.baseTax)} annual tax.`
+              )}
+            </div>
+
+            <div className="text-xs uppercase font-bold text-[#5C6875] tracking-wider mb-3">Where this comes from</div>
+            <div className="space-y-3 mb-6">
+              {results.insights.map((a: any, i: number) => (
+                <div key={i} className="flex gap-3 pt-3 border-t border-[#F5EFE4] first:border-t-0 first:pt-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#AE8340] mt-2 flex-none"></div>
                   <div>
-                    <h4 className="text-base font-bold text-[#DDB56A] mb-1">Next Step: Your Personal Tax Blueprint</h4>
-                    <p className="text-base text-slate-600">A strategy session identifies exactly what to fix first and saves you months of confusion.</p>
+                    <strong className="text-sm text-[#0D2A5C] block">{a.problem}{a.cost > 0 ? ` — ~${fmt(a.cost)}` : ""}</strong>
+                    <div className="text-xs text-[#22303F] mt-0.5">{a.fix}</div>
+                    <div className="text-[10px] text-[#93A2B4] italic mt-1">{a.cite}</div>
                   </div>
                 </div>
-              </div>
-
-              {/* Copy Button */}
-              <button 
-                onClick={copyToClipboard}
-                className="w-full bg-slate-100 hover:bg-slate-200 text-[#0A2049] font-bold py-5 px-6 rounded-2xl transition-colors mb-3 flex items-center justify-center gap-3 text-lg"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                Copy Full Report
-              </button>
-              <div className="text-center text-base text-emerald-600 font-bold h-6 mb-6">{copyFeedback}</div>
-
-              {/* CTA */}
-              <div className="bg-white border border-[#DDB56A]/30 p-10 rounded-3xl text-center mb-8 shadow-xl shadow-[#DDB56A]/5">
-                <h4 className="font-extrabold text-[#0A2049] text-2xl mb-3">Ready for Professional Support?</h4>
-                <p className="text-base text-slate-600 mb-8">Get a detailed tax strategy built specifically for your business situation.</p>
-                <Link href="/#book" className="inline-block bg-[#DDB56A] text-[#0A2049] font-bold py-5 px-10 rounded-2xl hover:bg-[#c9a358] transition-colors shadow-lg shadow-[#DDB56A]/20 text-lg">
-                  Book Consultation Now
-                </Link>
-              </div>
-
-              <button onClick={restartQuiz} className="w-full py-5 px-6 text-slate-500 font-bold rounded-2xl hover:bg-slate-100 transition-colors text-lg">
-                Retake Assessment
-              </button>
+              ))}
             </div>
-          )}
-        </div>
-      </main>
+
+            {results.oldestFineFlag && (
+              <div className="bg-[#F2E3C6] rounded-xl p-3 text-xs text-[#22303F] mb-6">
+                <strong className="text-[#AE8340]">Worth knowing:</strong> Interest and penalties on tax debt outstanding as of 30 June 2025 are waived in full under the TPCA if you pay principal by 30 June 2027.
+              </div>
+            )}
+
+            <p className="text-[11px] text-[#93A2B4] mb-6 leading-normal">
+              Estimates only, based on the Income Tax Act, VAT Act and Tax Procedures Code Act (FY2026/27). Book a call below for a precise figure.
+            </p>
+
+            <button type="button" onClick={handleReset} className="w-full bg-transparent border border-[#E4DCCD] text-[#5C6875] py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all cursor-pointer mb-6">
+              Start over
+            </button>
+
+            {/* CALL TO ACTION / BOOKING CARD */}
+            <div className="bg-gradient-to-br from-[#0D2A5C] to-[#0A2049] text-[#E8EEF9] rounded-2xl p-6 border border-[#DDB56A] shadow-xl text-center">
+              <h3 className="text-xl font-serif text-white mb-2 font-semibold">Fix this on a call</h3>
+              <p className="text-xs text-[#B7C8E4] mb-6">30 minutes with a tax specialist. UGX 300,000, payable via mobile money or card.</p>
+              
+              <Link 
+                href="/#book" 
+                className="inline-flex items-center justify-center gap-2 bg-[#DDB56A] hover:bg-[#c9a358] text-[#0D2A5C] font-bold text-sm px-6 py-4 rounded-full w-full transition-all shadow-lg"
+              >
+                Book Your Consultation Session
+              </Link>
+            </div>
+          </div>
+        )}
+
+      </div>
 
       {/* FOOTER */}
         <footer className="bg-[#0A2049] text-slate-300 border-t border-white/10">
@@ -422,7 +529,8 @@ export default function QuizPage() {
             </div>
             </div>
         </footer>
-
+        {/* FLOATING WHATSAPP BUTTON */}
+        <WhatsAppButton />
     </div>
   );
 }
