@@ -525,7 +525,7 @@ export default function QuizPage() {
                 </div>
             </div>
             <div className="mt-16 pt-8 border-t border-blue-900/50 text-xs text-blue-400/60 text-center max-w-3xl mx-auto leading-relaxed">
-                This page describes our consultation service and tax advice for your specific situation. Advice given during your call is based on your specific circumstances under Ugandan law.
+                Advice given during your call is based on your specific circumstances under Ugandan law.
             </div>
             </div>
         </footer>

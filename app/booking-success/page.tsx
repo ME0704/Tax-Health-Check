@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Navbar from "@/components/Navbar";
 
 export default function BookingSuccessPage() {
+  const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
+
   useEffect(() => {
     // Load Cal.com embed script dynamically
     (function (C, A, L) {
@@ -43,22 +46,20 @@ export default function BookingSuccessPage() {
       styles: { branding: { brandColor: "#0A2049" } },
       hideEventTypeDetails: false,
     });
+
+    // Dismiss loading overlay smoothly once the calendar initializes
+    const timer = setTimeout(() => {
+      setIsCalendarLoaded(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col selection:bg-[#DDB56A]/30 selection:text-[#0A2049]">
       
       {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 w-full bg-[#0A2049]/95 backdrop-blur-md border-b border-white/10 shadow-sm">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
-          <Link href="/" className="text-lg sm:text-xl font-bold text-white tracking-tight">
-            Tax Health <span className="text-[#DDB56A]">Check</span>
-          </Link>
-          <Link href="/" className="bg-[#DDB56A] text-[#0A2049] px-4 py-2 rounded-md font-semibold text-xs">
-            Home
-          </Link>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* MAIN CONTENT */}
       <main className="flex-grow py-12 px-4 md:px-8">
@@ -71,9 +72,18 @@ export default function BookingSuccessPage() {
             Your details have been received. Please select your 30-minute consultation slot below.
           </p>
           
-          {/* CAL.COM INLINE EMBED CONTAINER */}
-          <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden p-4 mb-8">
-            <div id="cal-inline-embed" style={{ width: "100%", height: "700px", overflow: "scroll" }}></div>
+          {/* CAL.COM INLINE EMBED CONTAINER WITH LOADING STATE */}
+          <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden p-6 relative min-h-[700px] flex flex-col items-center justify-center mb-8">
+            {!isCalendarLoaded && (
+              <div className="absolute inset-0 bg-white z-10 flex flex-col items-center justify-center p-8 space-y-4">
+                <div className="w-12 h-12 border-4 border-[#0A2049] border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-lg font-bold text-[#0A2049]">Loading your scheduling calendar...</p>
+                <p className="text-xs sm:text-sm text-slate-500 max-w-md leading-relaxed">
+                  Please hold on for a moment while we load your secure consultation slot. You will be able to select your preferred date and time shortly.
+                </p>
+              </div>
+            )}
+            <div id="cal-inline-embed" style={{ width: "100%", height: "700px" }}></div>
           </div>
 
           {/* RETURN HOME BUTTON AFTER MEETING SETUP */}
