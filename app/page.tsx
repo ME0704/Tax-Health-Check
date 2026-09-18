@@ -79,7 +79,7 @@ export default function Home() {
           {[
             { step: "01", title: "Take the Free Test", desc: "Use our 2-minute diagnostic tool to calculate your current tax risk and savings potential." },
             { step: "02", title: "Book a Strategy Call", desc: "Schedule a 30-minute one-on-one session with our URA-aware tax specialists." },
-            { step: "03", title: "Get Your Blueprint", desc: "Receive a personalized, step-by-step action plan to become fully compliant." }
+            { step: "03", title: "Get Your Blueprint", desc: "Receive a personalized, step-by-step action plan to become fully compliant with a written up plan sent to you within 24 hours." }
           ].map((item, i) => (
             <div key={i} className="relative z-10 bg-white text-center group">
               <div className="w-16 h-16 mx-auto bg-slate-50 border-2 border-slate-200 rounded-full flex items-center justify-center text-xl font-extrabold text-[#0A2049] mb-6 group-hover:border-[#DDB56A] group-hover:bg-[#DDB56A]/10 transition-all duration-500">
@@ -120,6 +120,149 @@ export default function Home() {
             <p className="text-[#0A2049] font-medium text-lg">
               None of this means you did anything wrong. It means you have been carrying a question alone that one clear call can answer.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. THE OFFER STACK */}
+      <section className="py-24 px-6 bg-white border-t border-slate-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-amber-600 font-bold text-sm uppercase tracking-wider">What you get</span>
+            <h2 className="text-4xl font-bold text-blue-950 mt-3">The Tax Health Check</h2>
+            <p className="text-lg text-slate-600 mt-4">One call. One diagnosis. A clear picture of where you stand.</p>
+          </div>
+
+          <div className="grid lg:grid-cols-5 gap-12 items-start">
+            {/* Left: Stack */}
+            <div className="lg:col-span-3 space-y-6">
+              {[
+                { title: "A focused 30 minute call", desc: "with a tax specialist, online, wherever you are." },
+                { title: "A quick diagnosis of your business.", desc: "What you owe depends on the nature of your business, or on what you earn as an individual." },
+                { title: "Every tax you are liable for, named.", desc: "Income tax, VAT, PAYE, withholding tax, local service tax, rental tax, whichever apply to you." },
+                { title: "Straight answers to your questions.", desc: "Nothing is too basic to ask." },
+                { title: "A one page action plan.", desc: "Written up and sent to you within 24 hours of the call." }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-4 p-4 rounded-lg hover:bg-slate-50 transition-colors">
+                  <div className="flex-shrink-0 text-amber-500 mt-1">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-blue-950 mb-1">{item.title}</h4>
+                    <p className="text-slate-600">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+              {/* Right: Pricing Card */}
+            <div className="lg:col-span-2 bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-sm">
+              <div className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Everything above, one payment</div>
+              <div className="text-5xl font-extrabold text-blue-950 mb-2">UGX 300,000</div>
+              <p className="text-slate-600 mb-8 pb-8 border-b border-slate-200">The consultation call fee.</p>
+
+              {/* <div className="mb-8">
+                <h4 className="font-bold text-blue-950 mb-4 flex items-center gap-2">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                  Pay by Mobile Money
+                </h4>
+              </div>
+
+              <a href="#book" className="block text-center bg-blue-950 text-white font-bold py-4 rounded-lg hover:bg-blue-900 transition-colors">
+                Book Your Slot
+              </a> */}
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      {/* 4. THE GUARANTEE */}
+      <section className="py-24 px-6 bg-blue-950 text-white relative overflow-hidden">
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <div className="w-16 h-16 mx-auto mb-6 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-500">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5l7.5 3v6c0 4.6-3.2 8.4-7.5 9.8C7.7 19.9 4.5 16.1 4.5 11.5v-6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg>
+          </div>
+          <span className="text-amber-500 font-bold text-sm uppercase tracking-wider">The guarantee</span>
+          <h2 className="text-4xl font-bold mt-3 mb-6">The risk sits with us.</h2>
+          <p className="text-2xl font-bold text-blue-100 mb-6">
+            A tax compliant business that is seamless to run within 30 days.
+          </p>
+          <div className="text-blue-200 text-lg space-y-4 leading-relaxed max-w-2xl mx-auto">
+            <p>Follow the plan we agree on, and within 30 days your filings are in order and the tax side of your business feels routine.</p>
+            <p>If 30 days pass and you are not there, we keep working with you for thirty more days at no extra cost.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. SCARCITY & BONUSES */}
+      <section className="py-24 px-6 bg-slate-50">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16">
+          
+          {/* Capacity */}
+          <div>
+            <span className="text-amber-600 font-bold text-sm uppercase tracking-wider">Our capacity</span>
+            <h2 className="text-3xl font-bold text-blue-950 mt-3 mb-6">We take 20 clients a month.</h2>
+            <div className="text-slate-600 space-y-4 leading-relaxed">
+              <p>Every health check is done personally by our team of experts. Accessing your business and writing your plan takes real hours, and those hours are finite.</p>
+              <p>When a month is full we say so and book you into the next one. No countdown clocks, ever. If a place is open, you can have it today.</p>
+            </div>
+          </div>
+
+          {/* Bonuses */}
+          <div>
+            <span className="text-amber-600 font-bold text-sm uppercase tracking-wider">Included as well</span>
+            <h2 className="text-3xl font-bold text-blue-950 mt-3 mb-6">Two things for the week after.</h2>
+            <div className="space-y-6">
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex gap-4">
+                <div className="w-8 h-8 rounded bg-amber-100 text-amber-700 font-bold flex items-center justify-center shrink-0">1</div>
+                <div>
+                  <h3 className="font-bold text-blue-950 mb-2">The Uganda Tax Filing Calendar</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">Every filing date that applies to a business like yours, on one page, so the deadlines live on your wall instead of in your head.</p>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex gap-4">
+                <div className="w-8 h-8 rounded bg-amber-100 text-amber-700 font-bold flex items-center justify-center shrink-0">2</div>
+                <div>
+                  <h3 className="font-bold text-blue-950 mb-2">The URA Letter First Response Guide</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">What to do in the first 48 hours when a URA letter or audit notice arrives. Most of the damage happens in the silence before people reply.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. PROOF (TESTIMONIALS) */}
+      <section className="py-24 px-6 bg-white border-t border-slate-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-amber-600 font-bold text-sm uppercase tracking-wider">In their words</span>
+            <h2 className="text-4xl font-bold text-blue-950 mt-3">What clients say.</h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
+            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200">
+              <div className="text-amber-400 mb-4">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+              </div>
+              <p className="text-lg text-slate-700 font-medium leading-relaxed mb-6">
+                "The Tax Health Check team sorted out our filing backlog, resolved our URA assessments, and fixed our bookkeeping for good. Exactly the tax clarity we needed."
+              </p>
+              <div className="font-bold text-blue-950">Namara Chris-Warren</div>
+              <div className="text-sm text-slate-500">Administrator, Jorowa Distillers Ltd</div>
+            </div>
+
+            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200">
+              <div className="text-amber-400 mb-4">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+              </div>
+              <p className="text-lg text-slate-700 font-medium leading-relaxed mb-6">
+                "They untangled our stock reorganisation and left us with a filing system that finally makes sense. Sharp, reliable tax expertise, highly recommended."
+              </p>
+              <div className="font-bold text-blue-950">Precious Kukunda</div>
+              <div className="text-sm text-slate-500">Finance Manager, Popular Lab Supplies Ltd</div>
+            </div>
           </div>
         </div>
       </section>
@@ -207,7 +350,11 @@ export default function Home() {
               <p>WhatsApp: <a href="https://wa.me/256761109667" className="text-white hover:text-[#DDB56A] transition-colors">+256 761 109 667</a></p>
               <p>Email: <a href="mailto:taxhealthcheckug@gmail.com" className="text-white hover:text-[#DDB56A] transition-colors">taxhealthcheckug@gmail.com</a></p>
               <p className="pt-4">House No.1 Katongole Road, Froebel-Bukoto, Kampala</p>
+              <p>P.O. Box 214, Ntinda, Kampala</p>
             </div>
+          </div>
+          <div className="mt-16 pt-8 border-t border-blue-900/50 text-xs text-blue-400/60 text-center max-w-3xl mx-auto leading-relaxed">
+            This page describes our consultation service and tax advice for your specific situation. Advice given during your call is based on your specific circumstances under Ugandan law.
           </div>
         </div>
       </footer>

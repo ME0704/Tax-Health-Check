@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 
 export default function BookingForm() {
@@ -11,7 +12,7 @@ export default function BookingForm() {
   };
 
   return (
-    <form className="space-y-6" onSubmit={handleBooking}>
+    <form className="space-y-6 relative z-20" onSubmit={handleBooking}>
       <div className="grid md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-bold text-[#0A2049] mb-2">Full name</label>
@@ -45,7 +46,7 @@ export default function BookingForm() {
         <textarea id="about" rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#0A2049] focus:ring-1 focus:ring-[#0A2049] transition-all" placeholder="e.g. I run a hardware store and have a pending assessment..."></textarea>
       </div>
 
-      <button type="submit" className="group w-full flex items-center justify-center gap-3 bg-[#DDB56A] text-[#0A2049] font-bold text-lg px-8 py-4 rounded-lg hover:bg-[#c9a358] transition-all duration-300 shadow-[0_4px_14px_0_rgba(221,181,106,0.39)] hover:shadow-[0_6px_20px_rgba(221,181,106,0.23)] hover:-translate-y-1">
+      <button type="submit" className="group w-full flex items-center justify-center gap-3 bg-[#DDB56A] text-[#0A2049] font-bold text-lg px-8 py-4 rounded-lg hover:bg-[#c9a358] transition-all duration-300 shadow-[0_4px_14px_0_rgba(221,181,106,0.39)] hover:shadow-[0_6px_20px_rgba(221,181,106,0.23)] hover:-translate-y-1 cursor-pointer">
         Proceed to Secure Payment
         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
       </button>
