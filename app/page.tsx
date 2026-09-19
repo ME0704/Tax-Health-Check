@@ -121,7 +121,7 @@ export default function Home() {
                 onClick={(e) => handleSmoothScroll(e, "book")}
                 className="w-full text-center border border-white/20 hover:border-[#DDB56A] text-white hover:text-[#DDB56A] font-semibold text-sm sm:text-base px-6 py-3.5 rounded-xl transition-all duration-300 backdrop-blur-sm cursor-pointer"
               >
-                Book Strategy Call — UGX 300k
+                Book Strategy Call At UGX 300,000
               </a>
             </div>
 
