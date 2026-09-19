@@ -237,9 +237,9 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: "Sarah K.", role: "Retail Store Owner", quote: "I was losing sleep over a URA assessment notice. One call cleared up everything and helped me negotiate the penalties down fairly." },
-              { name: "David M.", role: "Agency Founder", quote: "My books are finally organized, and I actually understand what I owe and when to pay it without second guessing." },
-              { name: "Grace N.", role: "Consultant", quote: "Clear, professional, and no complicated legal jargon. I finally understand my tax obligations without feeling judged." }
+              { name: "Namara Chris-Warren", role: "Administrator, Jorowa Distillers Ltd", quote: "The Tax Health Check team sorted out our filing backlog, resolved our URA assessments, and fixed our bookkeeping for good. Exactly the tax clarity we needed." },
+              { name: "Precious Kukunda", role: "Finance Manager, Popular Lab Supplies Ltd", quote: "The Tax Health Check team untangled our stock reorganisation and left us with a filing system that finally makes sense. Sharp, reliable tax expertise, highly recommended." },
+              { name: "Grace Nankya", role: "Consultant", quote: "Clear, professional, and no complicated legal jargon. I finally understand my tax obligations without feeling judged." }
             ].map((testimonial, i) => (
               <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
                 <div>
