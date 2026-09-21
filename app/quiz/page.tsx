@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Footer from "@/components/Footer";
 
 // Legal constants (FY2026/27)
 const CURRENCY_POINT = 20000;
@@ -498,38 +499,9 @@ export default function QuizPage() {
       </div>
 
       {/* FOOTER */}
-        <footer className="bg-[#0A2049] text-slate-300 border-t border-white/10">
-            <div className="max-w-[1440px] mx-auto px-6 md:px-12 py-16">
-            <div className="text-center mb-16 pb-16 border-b border-white/10">
-                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide">
-                Understand Tax, Maximise Wealth.
-                </h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-12">
-                <div>
-                <Link href="/" className="flex items-center gap-3 mb-4 group">
-                    <img src="/logo.jpeg" alt="Tax Health Check Logo" className="w-10 h-10 object-cover rounded group-hover:scale-105 transition-transform" />
-                    <span className="text-2xl font-bold text-white tracking-tight">
-                    Tax Health <span className="text-[#DDB56A]">Check</span>
-                    </span>
-                </Link>
-                <p className="text-sm text-slate-400 mb-6">A product of Mukiibi, Namanya Advocates.</p>
-                </div>
-    
-                <div className="md:text-right space-y-2 text-sm leading-relaxed">
-                <p>WhatsApp: <a href="https://wa.me/256761109667" className="text-white hover:text-[#DDB56A] transition-colors">+256 761 109 667</a></p>
-                <p>Email: <a href="mailto:taxhealthcheckug@gmail.com" className="text-white hover:text-[#DDB56A] transition-colors">taxhealthcheckug@gmail.com</a></p>
-                <p className="pt-4">House No.1 Katongole Road, Froebel-Bukoto, Kampala</p>
-                <p>P.O. Box 214, Ntinda, Kampala</p>
-                </div>
-            </div>
-            <div className="mt-16 pt-8 border-t border-blue-900/50 text-xs text-blue-400/60 text-center max-w-3xl mx-auto leading-relaxed">
-                Advice given during your call is based on your specific circumstances under Ugandan law.
-            </div>
-            </div>
-        </footer>
-        {/* FLOATING WHATSAPP BUTTON */}
+        <Footer />
+        
+      {/* FLOATING WHATSAPP BUTTON */}
         <WhatsAppButton />
     </div>
   );

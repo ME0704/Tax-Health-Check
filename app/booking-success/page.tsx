@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function BookingSuccessPage() {
   const [isCalendarLoaded, setIsCalendarLoaded] = useState(false);
@@ -103,9 +104,8 @@ export default function BookingSuccessPage() {
       <WhatsAppButton />
 
       {/* FOOTER */}
-      <footer className="bg-[#0A2049] text-slate-300 border-t border-white/10 mt-auto py-8 text-center text-xs">
-        <p>Tax Health Check — Mukiibi, Namanya Advocates.</p>
-      </footer>
+      <Footer />
+      
     </div>
   );
 }

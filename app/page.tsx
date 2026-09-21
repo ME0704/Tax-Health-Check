@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BookingForm from "@/components/BookingForm";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const router = useRouter();
@@ -75,7 +76,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.15] tracking-tight">
               Know every tax you owe. <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DDB56A] via-[#f4dca6] to-[#DDB56A]">
-                Penalty-free in 30 days.
+               Be Compliant and Penalty-free in 30 days.
               </span>
             </h1>
 
@@ -200,6 +201,23 @@ export default function Home() {
         </div>
       </section>
 
+            {/* 4. THE GUARANTEE */}
+      <section className="py-24 px-6 md:px-12 bg-[#0A2049] text-white relative overflow-hidden">
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          <div className="w-20 h-20 mx-auto mb-8 border-2 border-[#DDB56A] rounded-full flex items-center justify-center text-[#DDB56A] shadow-[0_0_30px_rgba(221,181,106,0.2)]">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5l7.5 3v6c0 4.6-3.2 8.4-7.5 9.8C7.7 19.9 4.5 16.1 4.5 11.5v-6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg>
+          </div>
+          <span className="text-[#DDB56A] font-bold text-xs uppercase tracking-wider block mb-3">The guarantee</span>
+          <h2 className="text-4xl font-bold mb-6">The risk sits with us.</h2>
+          <p className="text-2xl font-bold text-white mb-8 leading-tight">
+            A tax compliant business that is seamless to run within 30 days.
+          </p>
+          <div className="text-slate-300 text-lg space-y-4 leading-relaxed max-w-4xl mx-auto">
+            <p>Follow the plan we agree on, and within 30 days your filings are in order and the tax side of your business feels routine. If 30 days pass and you are not there, we keep working with you for thirty more days at no extra cost.</p>
+          </div>
+        </div>
+      </section>
+
       {/* 3. FAQ SECTION */}
       <section id="faq" className="py-24 px-6 lg:px-16 bg-white border-t border-slate-100 scroll-mt-28">
         <div className="max-w-4xl mx-auto">
@@ -256,6 +274,8 @@ export default function Home() {
         </div>
       </section>
 
+
+
       {/* 5. BOOKING FORM */}
       <section id="book" className="py-24 px-6 lg:px-16 bg-white border-t border-slate-100 scroll-mt-28">
         <div className="max-w-4xl mx-auto">
@@ -270,37 +290,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FOOTER */}
+      <Footer />
+
       {/* FLOATING WHATSAPP BUTTON */}
       <WhatsAppButton />
-
-      {/* FOOTER */}
-      <footer className="bg-[#0A2049] text-slate-300 border-t border-white/10">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-16 py-16">
-          <div className="text-center mb-16 pb-16 border-b border-white/10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide">
-              Understand Tax, Maximise Wealth.
-            </h2>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <Link href="/" className="flex items-center gap-3 mb-4 group">
-                <img src="/logo.jpeg" alt="Tax Health Check Logo" className="w-10 h-10 object-cover rounded group-hover:scale-105 transition-transform" />
-                <span className="text-2xl font-bold text-white tracking-tight">
-                  Tax Health <span className="text-[#DDB56A]">Check</span>
-                </span>
-              </Link>
-              <p className="text-sm text-slate-400 mb-6">A product of Mukiibi, Namanya Advocates.</p>
-            </div>
-
-            <div className="md:text-right space-y-2 text-sm leading-relaxed">
-              <p>WhatsApp: <a href="https://wa.me/256761109667" className="text-white hover:text-[#DDB56A] transition-colors">+256 761 109 667</a></p>
-              <p>Email: <a href="mailto:taxhealthcheckug@gmail.com" className="text-white hover:text-[#DDB56A] transition-colors">taxhealthcheckug@gmail.com</a></p>
-              <p className="pt-4">House No.1 Katongole Road, Froebel-Bukoto, Kampala</p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

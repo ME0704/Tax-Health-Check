@@ -16,7 +16,7 @@ export default function BookingForm() {
       <div className="grid md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-bold text-[#0A2049] mb-2">Full name</label>
-          <input type="text" id="name" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#0A2049] focus:ring-1 focus:ring-[#0A2049] transition-all" placeholder="John Doe" required />
+          <input type="text" id="name" className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#0A2049] focus:ring-1 focus:ring-[#0A2049] transition-all" placeholder="Christopher Philips" required />
         </div>
         <div>
           <label htmlFor="phone" className="block text-sm font-bold text-[#0A2049] mb-2">Phone number</label>
