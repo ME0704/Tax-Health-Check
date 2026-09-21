@@ -26,7 +26,9 @@ export default function Footer() {
             <div className="md:text-right space-y-2 text-sm leading-relaxed">
               <p>WhatsApp: <a href="https://wa.me/256761109667" className="text-white hover:text-[#DDB56A] transition-colors">+256 761 109 667</a></p>
               <p>Email: <a href="mailto:taxhealthcheckug@gmail.com" className="text-white hover:text-[#DDB56A] transition-colors">taxhealthcheckug@gmail.com</a></p>
-              <p className="pt-4">House No.1 Katongole Road, Froebel-Bukoto, Kampala</p>
+              <p className="pt-4">House No.1 Katongole Road, Froebel-Bukoto, Kampala </p>
+              <p className="pt-4">P.O. Box 214, Ntinda, Kampala</p>
+              
             </div>
           </div>
         </div>
