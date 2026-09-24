@@ -6,17 +6,20 @@ const nunito = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito" });
 const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
 
 export const metadata: Metadata = {
+  // CRITICAL: Replace with your actual live deployed domain
+  metadataBase: new URL("https://your-deployed-domain.com"), 
+  
   title: "Tax Health Check | Expert URA Tax Advisory in Uganda",
   description: "Stop guessing your URA obligations. Get an independent compliance audit and a crystal-clear action plan.",
   keywords: "URA tax penalties, tax compliance Uganda, tax lawyer Kampala, VAT advisory Uganda, income tax health check",
   openGraph: {
     title: "Tax Health Check | Uganda Revenue Authority Advisory",
     description: "Clear your tax exposure and stay penalty-free in 30 days with expert legal advisory.",
-    url: "https://your-domain.com", // Replace with actual domain
+    url: "/",
     siteName: "Tax Health Check",
     images: [
       {
-        url: "/og-image.jpg", // Create this 1200x630 image in your public folder
+        url: "/og-image.jpg", // Make sure this exact file is in your public/ folder
         width: 1200,
         height: 630,
         alt: "Tax Health Check Advisory",
