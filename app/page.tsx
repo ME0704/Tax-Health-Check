@@ -156,33 +156,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* 2. HOW IT WORKS */}
-      <section id="how-it-works" className="py-24 bg-[#FCF9F4] relative z-20 scroll-mt-20">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
-            <span className="text-[#DDB56A] font-bold text-xs uppercase tracking-wider block mb-2">The Process</span>
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-[#0A2049]">How the Health Check Works</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12 relative">
-            <div className="hidden md:block absolute top-8 left-[20%] right-[20%] h-[2px] bg-slate-200 z-0"></div>
-            {[
-              { step: "01", title: "Take the Free Test", desc: "Use our 2-minute diagnostic tool to calculate your current tax risk and savings potential based on Ugandan tax laws." },
-              { step: "02", title: "Book a Strategy Call", desc: "Our system routes you to Selar for payment, then to Cal.com to schedule your Zoom, Phone, or Physical meeting." },
-              { step: "03", title: "Get Your Blueprint", desc: "Receive a personalized, step-by-step action plan from our tax experts to become fully compliant." }
-            ].map((item, i) => (
-              <div key={i} className="relative z-10 bg-white p-8 rounded-2xl border border-slate-200 text-center shadow-sm hover:shadow-lg hover:border-[#DDB56A]/50 transition-all duration-300">
-                <div className="w-16 h-16 mx-auto bg-[#FCF9F4] border-2 border-[#DDB56A] rounded-full flex items-center justify-center text-xl font-extrabold text-[#0A2049] mb-6 shadow-md">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-bold text-[#0A2049] mb-3">{item.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. THE PAIN */}
+      {/* 2. THE PAIN */}
       <section className="py-24 px-6 lg:px-16 bg-white border-y border-slate-100">
         <div className="max-w-[1200px] mx-auto">
           <span className="text-[#DDB56A] font-bold text-xs uppercase tracking-wider block mb-2">If this sounds familiar</span>
@@ -213,6 +187,34 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 3. HOW IT WORKS */}
+      <section id="how-it-works" className="py-24 bg-[#FCF9F4] relative z-20 scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <span className="text-[#DDB56A] font-bold text-xs uppercase tracking-wider block mb-2">The Process</span>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-[#0A2049]">How the Health Check Works</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12 relative">
+            <div className="hidden md:block absolute top-8 left-[20%] right-[20%] h-[2px] bg-slate-200 z-0"></div>
+            {[
+              { step: "01", title: "Take the Free Test", desc: "Use our 2-minute diagnostic tool to calculate your current tax risk and savings potential based on Ugandan tax laws." },
+              { step: "02", title: "Book a Strategy Call", desc: "Our system routes you to Selar for payment, then to Cal.com to schedule your Zoom, Phone, or Physical meeting." },
+              { step: "03", title: "Get Your Blueprint", desc: "Receive a personalized, step-by-step action plan from our tax experts to become fully compliant." }
+            ].map((item, i) => (
+              <div key={i} className="relative z-10 bg-white p-8 rounded-2xl border border-slate-200 text-center shadow-sm hover:shadow-lg hover:border-[#DDB56A]/50 transition-all duration-300">
+                <div className="w-16 h-16 mx-auto bg-[#FCF9F4] border-2 border-[#DDB56A] rounded-full flex items-center justify-center text-xl font-extrabold text-[#0A2049] mb-6 shadow-md">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-bold text-[#0A2049] mb-3">{item.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      
 
      {/* 4. OUR ENGAGEMENT MODEL */}
       <section id="services" className="py-24 px-6 lg:px-16 bg-[#FCF9F4] scroll-mt-20">
