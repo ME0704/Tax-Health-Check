@@ -26,7 +26,7 @@ export default function Footer() {
             <p>Email: <a href="mailto:taxhealthcheckug@gmail.com" className="text-white hover:text-[#DDB56A] transition-colors">taxhealthcheckug@gmail.com</a></p>
             <div className="pt-2">
               <a 
-                href="https://www.google.com/maps/@0.3530264,32.6052334,1228a,75y,313.04h,66.82t/data=!3m7!1e1!3m5!1sglx13kLB9MGgnp2CcTkz3Q!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D23.180000000000007%26panoid%3Dglx13kLB9MGgnp2CcTkz3Q%26yaw%3D313.04!7i13312!8i6656?entry=ttu&g_ep=EgoyMDI2MDkyMS4wIKXMDSoASAFQAw%3D%3D" 
+                href="https://maps.app.goo.gl/6TV7Y7xCFjGJBwMWA" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 hover:text-[#DDB56A] transition-colors group"
