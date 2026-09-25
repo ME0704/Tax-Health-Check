@@ -251,7 +251,7 @@ export default function Home() {
             {/* Model 2: Retainer */}
             <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
               <div>
-                <span className="bg-slate-100 border border-slate-200 text-[#0A2049] font-bold text-[8px] md:text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-full mb-4 inline-block">
+                <span className="bg-[#0A2049] text-white font-bold text-[8px] md:text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-full mb-4 inline-block shadow-sm">
                   Option 2 · Dedicated Hand-Holding
                 </span>
                 <h3 className="text-xl md:text-2xl font-extrabold text-[#0A2049] mb-2 md:mb-3">Ongoing Tax & Bookkeeping</h3>
@@ -310,7 +310,6 @@ export default function Home() {
               { q: "What happens if you miss your URA filing deadline?", a: "Missing a filing deadline automatically accrues penalties. However, we can help assess the damage and guide you on potential waiver applications." },
               { q: "Are you affiliated with the Uganda Revenue Authority (URA)?", a: "No. We are a fully independent legal and tax advisory firm. Our primary duty is to protect your business interests and ensure you comply with the law without overpaying." },
               { q: "Can you help my business register for taxes if we are just starting?", a: "Yes. We guide new businesses through TIN registration, VAT threshold assessments, and setting up proper compliance structures from day one." },
-              { q: "How long does the initial consultation take?", a: "The initial Strategy Call takes exactly 30 minutes. During this time, we diagnose your exposure and map out your custom compliance blueprint." }
             ].map((faq, i) => (
               <details key={i} className="group bg-[#FCF9F4] border border-slate-200 rounded-xl open:bg-white open:border-[#DDB56A]/50 transition-all duration-300">
                 <summary className="flex items-center justify-between cursor-pointer p-4 md:p-5 font-bold text-[#0A2049] text-sm md:text-base">
