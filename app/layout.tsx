@@ -6,8 +6,8 @@ const nunito = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito" });
 const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
 
 export const metadata: Metadata = {
-  // CRITICAL: Replace with your actual live deployed domain
-  metadataBase: new URL("https://your-deployed-domain.com"), 
+  // CRITICAL: Put your exact Netlify domain here
+  metadataBase: new URL("https://taxhealthcheck2557.netlify.app"), 
   
   title: "Tax Health Check | Expert URA Tax Advisory in Uganda",
   description: "Stop guessing your URA obligations. Get an independent compliance audit and a crystal-clear action plan.",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: "Tax Health Check",
     images: [
       {
-        url: "/og-image.jpg", // Make sure this exact file is in your public/ folder
+        url: "/og-image.jpg", // This file MUST exist in your public/ folder
         width: 1200,
         height: 630,
         alt: "Tax Health Check Advisory",

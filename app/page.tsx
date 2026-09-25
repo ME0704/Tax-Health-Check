@@ -71,7 +71,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A2049] leading-[1.15] tracking-tight">
               Stop guessing your <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DDB56A] to-[#b89047]">
-                URA tax exposure.
+                URA tax exposure
               </span>
             </h1>
 
