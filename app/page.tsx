@@ -56,9 +56,6 @@ export default function Home() {
       {/* 1. PREMIUM FINTECH HERO SECTION */}
       <header className="relative bg-white pt-8 pb-12 md:pt-16 md:pb-24 overflow-hidden border-b border-slate-200">
         
-        {/* Architectural Background Grid for Precision/Finance Vibe */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-        
         {/* Ambient Glowing Orbs for Depth */}
         <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
           <div className="absolute top-[-10%] right-[-5%] w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#DDB56A]/15 via-[#DDB56A]/5 to-transparent rounded-full blur-[80px]"></div>
@@ -70,7 +67,7 @@ export default function Home() {
           {/* Left Column: Structured Typography & Calls to Action */}
           <div className="lg:col-span-7 text-center lg:text-left space-y-6">
             
-            {/* High-End Badge */}
+            {/* High-End Badge
             <div className="inline-flex items-center gap-2.5 bg-white border border-slate-200 px-4 py-2 rounded-full shadow-[0_2px_10px_-3px_rgba(10,32,73,0.1)] animate-hero-badge relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#DDB56A]/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
               <span className="relative flex h-2.5 w-2.5">
@@ -78,16 +75,16 @@ export default function Home() {
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#DDB56A]"></span>
               </span>
               <span className="text-[#0A2049] font-bold text-[10px] sm:text-xs tracking-widest uppercase relative z-10">
-                Tax Health Check · Expert URA Advisory in Uganda
+                Expert Legal Tax Advisory
               </span>
-            </div>
+            </div> */}
 
             {/* Headline with Clean Draw-Line */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A2049] leading-[1.12] tracking-tight animate-hero-title drop-shadow-sm">
               Stop guessing your <br className="hidden sm:block" />
               <span className="relative inline-block mt-1">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DDB56A] to-[#b89047]">
-                  URA tax exposure.
+                  URA tax exposure
                 </span>
                 <span className="absolute bottom-1 left-0 w-full h-1.5 md:h-2 bg-[#DDB56A]/20 origin-left animate-draw-line rounded-full"></span>
               </span>
@@ -104,10 +101,7 @@ export default function Home() {
             {/* Launch Concession Ribbon */}
             <div className="flex justify-center lg:justify-start pt-2 animate-hero-offer">
               <div className="inline-flex items-center gap-2 bg-[#FCF9F4] border border-[#DDB56A]/40 text-[#0A2049] text-[9px] sm:text-[11px] font-extrabold uppercase tracking-widest px-4 py-2 rounded-lg shadow-sm">
-                <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DDB56A] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#DDB56A]"></span>
-              </span>
+                <span className="text-[#DDB56A] text-lg leading-none">★</span>
                 Special Launch Offer: Save UGX 100,000
               </div>
             </div>
@@ -161,7 +155,7 @@ export default function Home() {
               />
             </div>
 
-            {/* Floating Metric 1: URA Compliance Badge (Frosted Glass Style) */}
+            {/* Floating Metric 1: URA Audit Status (Frosted Glass Style) */}
             <div 
               className="absolute top-2 md:top-8 -right-4 md:-right-12 z-20 bg-white/80 backdrop-blur-md p-3 md:p-4 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white flex items-center gap-3"
               style={{ animation: 'floatMetric 5s ease-in-out infinite' }}
@@ -170,12 +164,12 @@ export default function Home() {
                 ✓
               </div>
               <div className="text-left">
-                <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Status</p>
-                <p className="text-sm md:text-base font-extrabold text-[#0A2049] leading-tight">100% Compliant</p>
+                <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">URA Audit Status</p>
+                <p className="text-sm md:text-base font-extrabold text-[#0A2049] leading-tight">100% Penalty-Free</p>
               </div>
             </div>
 
-            {/* Floating Metric 2: Resolution Guarantee Badge (Navy Premium Style) */}
+            {/* Floating Metric 2: Tax Liability Risk (Navy Premium Style) */}
             <div 
               className="absolute bottom-4 md:bottom-12 -left-4 md:-left-12 z-20 bg-[#0A2049]/95 backdrop-blur-md p-3 md:p-4 rounded-2xl shadow-[0_15px_40px_rgb(10,32,73,0.3)] border border-[#DDB56A]/30 flex items-center gap-3"
               style={{ animation: 'floatMetricReverse 6s ease-in-out infinite' }}
@@ -184,8 +178,8 @@ export default function Home() {
                 <span className="text-xl md:text-2xl font-black text-[#DDB56A] leading-none">0%</span>
               </div>
               <div className="text-left border-l border-white/10 pl-3 ml-1">
-                <p className="text-[9px] md:text-[10px] text-slate-300 font-bold uppercase tracking-wider mb-0.5">Penalties</p>
-                <p className="text-xs md:text-sm font-bold text-white leading-tight">Exposure Cleared</p>
+                <p className="text-[9px] md:text-[10px] text-slate-300 font-bold uppercase tracking-wider mb-0.5">Tax Liability Risk</p>
+                <p className="text-xs md:text-sm font-bold text-white leading-tight">Exposure Found</p>
               </div>
             </div>
 
