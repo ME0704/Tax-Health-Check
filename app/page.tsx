@@ -53,100 +53,195 @@ export default function Home() {
     <div className="min-h-screen bg-[#FCF9F4] font-sans text-slate-800 selection:bg-[#DDB56A]/30 selection:text-[#0A2049]">
       <Navbar />
 
-      {/* 1. ULTRA-TIGHT MOBILE HERO SECTION */}
-      <header className="relative bg-white pt-8 pb-6 md:pt-16 md:pb-20 overflow-hidden border-b border-slate-200 shadow-sm">
+      {/* 1. PREMIUM FINTECH HERO SECTION */}
+      <header className="relative bg-white pt-8 pb-12 md:pt-16 md:pb-24 overflow-hidden border-b border-slate-200">
         
-        {/* Abstract Backgrounds */}
+        {/* Architectural Background Grid for Precision/Finance Vibe */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        
+        {/* Ambient Glowing Orbs for Depth */}
         <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] right-[-5%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-gradient-to-bl from-[#DDB56A]/10 to-transparent rounded-full blur-[80px]"></div>
-          <div className="absolute bottom-[-10%] left-[-5%] w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-gradient-to-tr from-[#0A2049]/5 to-transparent rounded-full blur-[80px]"></div>
+          <div className="absolute top-[-10%] right-[-5%] w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#DDB56A]/15 via-[#DDB56A]/5 to-transparent rounded-full blur-[80px]"></div>
+          <div className="absolute bottom-[-10%] left-[-10%] w-[350px] md:w-[500px] h-[350px] md:h-[500px] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#0A2049]/10 via-[#0A2049]/5 to-transparent rounded-full blur-[80px]"></div>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-5 lg:px-12 relative z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="max-w-[1400px] mx-auto px-5 lg:px-12 relative z-10 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mt-4">
           
-          {/* Left Column: Core Copy & Calls to Action */}
-          <div className="lg:col-span-7 text-center lg:text-left space-y-5 md:space-y-6">
-  
-            {/* Reduced Heading Font Size */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A2049] leading-[1.15] tracking-tight">
-              Stop guessing your <br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DDB56A] to-[#b89047]">
-                URA tax exposure
+          {/* Left Column: Structured Typography & Calls to Action */}
+          <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+            
+            {/* High-End Badge */}
+            <div className="inline-flex items-center gap-2.5 bg-white border border-slate-200 px-4 py-2 rounded-full shadow-[0_2px_10px_-3px_rgba(10,32,73,0.1)] animate-hero-badge relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#DDB56A]/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DDB56A] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#DDB56A]"></span>
               </span>
-            </h1>
-
-            <p className="text-sm md:text-base text-slate-600 leading-relaxed font-light max-w-lg mx-auto lg:mx-0">
-              Calculate your exact statutory risk in two minutes. Get a custom, step-by-step legal blueprint based on <strong className="font-bold text-[#0A2049]">Ugandan tax laws</strong> to protect your business and stay <strong className="font-bold text-[#0A2049]">penalty-free</strong>            </p>
-
-            <div className="flex justify-center lg:justify-start">
-              <span className="inline-flex items-center gap-1.5 bg-[#DDB56A]/10 border border-[#DDB56A]/30 text-[#0A2049] text-[9px] sm:text-[11px] font-extrabold uppercase tracking-widest px-3 md:px-4 py-1.5 rounded-full shadow-sm">
-                <svg className="w-3.5 h-3.5 text-[#DDB56A] hidden sm:block" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                Launch Offer: Save UGX 100,000
+              <span className="text-[#0A2049] font-bold text-[10px] sm:text-xs tracking-widest uppercase relative z-10">
+                Tax Health Check · Expert URA Advisory in Uganda
               </span>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-1 justify-center lg:justify-start">
+            {/* Headline with Clean Draw-Line */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A2049] leading-[1.12] tracking-tight animate-hero-title drop-shadow-sm">
+              Stop guessing your <br className="hidden sm:block" />
+              <span className="relative inline-block mt-1">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DDB56A] to-[#b89047]">
+                  URA tax exposure.
+                </span>
+                <span className="absolute bottom-1 left-0 w-full h-1.5 md:h-2 bg-[#DDB56A]/20 origin-left animate-draw-line rounded-full"></span>
+              </span>
+            </h1>
+
+            {/* Subtitle with Glassmorphic Accent Panel */}
+            <div className="relative animate-hero-desc">
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#DDB56A] to-[#DDB56A]/20 rounded-full hidden lg:block"></div>
+              <p className="text-sm md:text-lg text-slate-600 leading-relaxed font-light max-w-xl mx-auto lg:mx-0 lg:pl-6 bg-white/40 lg:bg-transparent p-4 lg:p-0 rounded-xl lg:rounded-none backdrop-blur-sm lg:backdrop-blur-none border border-white/50 lg:border-none shadow-sm lg:shadow-none">
+                Calculate your exact statutory risk in two minutes. Get a custom, step-by-step legal blueprint based on <strong className="font-bold text-[#0A2049]">Ugandan tax laws</strong> to protect your business and stay <strong className="font-bold text-[#0A2049]">penalty-free</strong>.
+              </p>
+            </div>
+
+            {/* Launch Concession Ribbon */}
+            <div className="flex justify-center lg:justify-start pt-2 animate-hero-offer">
+              <div className="inline-flex items-center gap-2 bg-[#FCF9F4] border border-[#DDB56A]/40 text-[#0A2049] text-[9px] sm:text-[11px] font-extrabold uppercase tracking-widest px-4 py-2 rounded-lg shadow-sm">
+                <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DDB56A] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#DDB56A]"></span>
+              </span>
+                Special Launch Offer: Save UGX 100,000
+              </div>
+            </div>
+
+            {/* Interactive Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-2 justify-center lg:justify-start animate-hero-buttons">
               <Link 
                 href="/quiz" 
-                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0A2049] hover:bg-[#132c5e] text-white font-bold text-sm px-6 py-3.5 rounded-xl transition-all shadow-md hover:-translate-y-0.5"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0A2049] hover:bg-[#132c5e] text-white font-bold text-sm px-7 py-4 rounded-xl transition-all shadow-[0_8px_20px_rgba(10,32,73,0.25)] hover:shadow-[0_10px_25px_rgba(10,32,73,0.35)] hover:-translate-y-1"
               >
                 Start Free Risk Check
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                <svg className="w-4 h-4 text-[#DDB56A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </Link>
               <a 
                 href="#book" 
                 onClick={(e) => handleSmoothScroll(e, "book")}
-                className="w-full sm:w-auto flex items-center justify-center gap-3 border-2 border-[#0A2049] text-[#0A2049] hover:bg-[#0A2049] hover:text-white font-bold text-sm px-5 py-3 rounded-xl transition-all shadow-sm cursor-pointer group"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-white border-2 border-[#0A2049]/10 hover:border-[#0A2049] text-[#0A2049] font-bold text-sm px-6 py-3.5 rounded-xl transition-all shadow-sm cursor-pointer group"
               >
                 <span>Book Strategy Call</span>
-                <span className="flex flex-col items-start border-l border-[#0A2049]/20 group-hover:border-white/20 pl-3">
+                <span className="flex flex-col items-start border-l border-slate-200 group-hover:border-[#0A2049]/20 pl-3 transition-colors">
                   <span className="text-[10px] line-through text-slate-400 font-medium leading-none mb-0.5">UGX 400k</span>
                   <span className="text-xs text-[#DDB56A] font-extrabold leading-none">UGX 300k</span>
                 </span>
               </a>
             </div>
+
+            {/* Static Trust Checkmarks */}
+            <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <span className="flex items-center gap-1.5"><span className="flex items-center justify-center w-4 h-4 rounded-full bg-[#DDB56A]/10 text-[#DDB56A]">✓</span> 100% Confidential</span>
+              <span className="flex items-center gap-1.5"><span className="flex items-center justify-center w-4 h-4 rounded-full bg-[#DDB56A]/10 text-[#DDB56A]">✓</span> Ugandan Tax Law</span>
+              <span className="flex items-center gap-1.5"><span className="flex items-center justify-center w-4 h-4 rounded-full bg-[#DDB56A]/10 text-[#DDB56A]">✓</span> 30-Day Resolution</span>
+            </div>
           </div>
 
-          {/* Right Column: Refined Animated Logo Presentation */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center py-4 md:py-0 space-y-6">
+          {/* Right Column: High-End 3D Visual with Glassmorphic Floating Metrics */}
+          <div className="lg:col-span-5 relative flex justify-center py-6 md:py-2">
             
-            <div className="relative w-full max-w-[200px] md:max-w-[280px] flex justify-center items-center h-[200px] md:h-[280px]">
-              
-              {/* Refined Breathing Aura Animation */}
-              <div className="absolute w-[110%] h-[110%] bg-gradient-to-tr from-[#DDB56A]/30 via-transparent to-[#0A2049]/20 rounded-[2rem] blur-xl animate-[pulse_4s_ease-in-out_infinite]"></div>
-              <div className="absolute w-[90%] h-[90%] bg-white/40 rounded-full blur-2xl animate-[ping_6s_ease-in-out_infinite] opacity-50"></div>
-              
-              {/* Floating Glass Logo Card */}
-              <div 
-                className="relative z-10 bg-white/95 backdrop-blur-sm p-3 sm:p-5 rounded-[1.5rem] md:rounded-[2rem] shadow-[0_15px_40px_-15px_rgba(10,32,73,0.2)] border border-white w-full transform transition-transform hover:scale-105 duration-500"
-                style={{ animation: 'float 6s ease-in-out infinite' }}
-              >
-                <img 
-                  src="/logo.jpeg" 
-                  alt="Tax Health Check Logo" 
-                  className="w-full h-auto object-contain rounded-xl md:rounded-2xl"
-                />
-              </div>
+            {/* Abstract Decorative Circles Behind Image */}
+            <div className="absolute top-10 right-4 w-24 h-24 border border-[#DDB56A]/30 rounded-full animate-[spin_20s_linear_infinite]"></div>
+            <div className="absolute bottom-10 left-0 w-16 h-16 bg-[#0A2049]/5 rounded-full animate-pulse"></div>
 
-              <style jsx>{`
-                @keyframes float {
-                  0% { transform: translateY(0px); }
-                  50% { transform: translateY(-12px); }
-                  100% { transform: translateY(0px); }
-                }
-              `}</style>
+            {/* 3D Illustration Container */}
+            <div 
+              className="relative z-10 w-full max-w-[320px] sm:max-w-[380px] md:max-w-[440px] rounded-3xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(10,32,73,0.2)] border-8 border-white bg-white/50 backdrop-blur-sm"
+              style={{ animation: 'float 6s ease-in-out infinite' }}
+            >
+              <img 
+                src="/hero-3d-tax.png" 
+                alt="Tax Expert and Client" 
+                className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
+              />
             </div>
 
-            {/* Rebalanced Trust Indicators */}
-            <div className="flex flex-wrap justify-center gap-4 text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider px-4">
-              <span className="flex items-center gap-1.5"><span className="text-[#DDB56A] text-sm md:text-base">✓</span> Confidential</span>
-              <span className="flex items-center gap-1.5"><span className="text-[#DDB56A] text-sm md:text-base">✓</span> Ugandan Law</span>
-              <span className="flex items-center gap-1.5"><span className="text-[#DDB56A] text-sm md:text-base">✓</span> Action Plan</span>
+            {/* Floating Metric 1: URA Compliance Badge (Frosted Glass Style) */}
+            <div 
+              className="absolute top-2 md:top-8 -right-4 md:-right-12 z-20 bg-white/80 backdrop-blur-md p-3 md:p-4 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white flex items-center gap-3"
+              style={{ animation: 'floatMetric 5s ease-in-out infinite' }}
+            >
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm shadow-inner">
+                ✓
+              </div>
+              <div className="text-left">
+                <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Status</p>
+                <p className="text-sm md:text-base font-extrabold text-[#0A2049] leading-tight">100% Compliant</p>
+              </div>
+            </div>
+
+            {/* Floating Metric 2: Resolution Guarantee Badge (Navy Premium Style) */}
+            <div 
+              className="absolute bottom-4 md:bottom-12 -left-4 md:-left-12 z-20 bg-[#0A2049]/95 backdrop-blur-md p-3 md:p-4 rounded-2xl shadow-[0_15px_40px_rgb(10,32,73,0.3)] border border-[#DDB56A]/30 flex items-center gap-3"
+              style={{ animation: 'floatMetricReverse 6s ease-in-out infinite' }}
+            >
+              <div className="flex flex-col justify-center items-center">
+                <span className="text-xl md:text-2xl font-black text-[#DDB56A] leading-none">0%</span>
+              </div>
+              <div className="text-left border-l border-white/10 pl-3 ml-1">
+                <p className="text-[9px] md:text-[10px] text-slate-300 font-bold uppercase tracking-wider mb-0.5">Penalties</p>
+                <p className="text-xs md:text-sm font-bold text-white leading-tight">Exposure Cleared</p>
+              </div>
             </div>
 
           </div>
 
         </div>
+
+        {/* Global Embedded Styles for Fluid Keyframe Animations */}
+        <style jsx global>{`
+          @keyframes drawLine {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+          }
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(16px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+          }
+          @keyframes floatMetric {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+          }
+          @keyframes floatMetricReverse {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(8px); }
+          }
+
+          .animate-draw-line {
+            animation: drawLine 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.6s both;
+          }
+          .animate-hero-badge {
+            animation: fadeInUp 0.5s ease-out forwards;
+          }
+          .animate-hero-title {
+            animation: fadeInUp 0.7s ease-out 0.1s both;
+          }
+          .animate-hero-desc {
+            animation: fadeInUp 0.7s ease-out 0.2s both;
+          }
+          .animate-hero-offer {
+            animation: fadeInUp 0.7s ease-out 0.3s both;
+          }
+          .animate-hero-buttons {
+            animation: fadeInUp 0.7s ease-out 0.4s both;
+          }
+        `}</style>
       </header>
 
       {/* 2. THE PAIN */}
