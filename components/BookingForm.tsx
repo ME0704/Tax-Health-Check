@@ -68,7 +68,7 @@ export default function BookingForm() {
           Briefly describe your business or tax issue
         </label>
         <p className="text-xs text-slate-500 mb-2">Helps our tax advocates prepare statutory references prior to your session.</p>
-        <textarea id="about" rows={3} className="w-full bg-[#FCF9F4] border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#DDB56A] focus:ring-1 focus:ring-[#DDB56A]" placeholder="e.g. We have pending withholding tax assessments or need clarification on VAT thresholds..." required></textarea>
+        <textarea id="about" rows={3} className="w-full bg-[#FCF9F4] border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#DDB56A] focus:ring-1 focus:ring-[#DDB56A]" placeholder="e.g. We have pending withholding tax assessments or need clarification on VAT thresholds..." ></textarea>
       </div>
 
       <button type="submit" className="w-full flex items-center justify-center gap-2 bg-[#0A2049] hover:bg-[#132c5e] text-white font-bold text-base px-8 py-4 rounded-xl transition-all shadow-md cursor-pointer mt-4">
