@@ -63,17 +63,22 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-slate-100 shadow-xl py-4 px-5 flex flex-col gap-4">
           <Link href="/quiz" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">Free Risk Check</Link>
-          <a href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">How It Works</a>
-          <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">Services</a>
-          <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">FAQ</a>
-          <a href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">Testimonials</a>
-          <a 
-            href="#book" 
+          <Link href="/#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">How It Works</Link>
+          <Link href="/#services" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">Services</Link>
+          
+          {/* New Blog/Insights Link */}
+          <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-[#0A2049] py-2 border-b border-slate-50">Blog</Link>
+          
+          <Link href="/#faq" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">FAQ</Link>
+          <Link href="/#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-bold text-slate-700 py-2 border-b border-slate-50">Testimonials</Link>
+          
+          <Link 
+            href="/#book" 
             onClick={() => setIsMobileMenuOpen(false)} 
             className="bg-[#0A2049] text-[#DDB56A] text-center py-3.5 rounded-xl text-sm font-extrabold mt-2 shadow-md"
           >
             Book a Call
-          </a>
+          </Link>
         </div>
       )}
     </nav>
