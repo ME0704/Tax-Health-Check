@@ -38,7 +38,7 @@ export default function BookingSuccessPage() {
     // @ts-ignore
     window.Cal("inline", {
       elementOrSelector: "#cal-inline-embed",
-      calLink: "princeemmatest2557/30min", 
+      calLink: "taxhealthcheck/30min", 
       layout: "month_view"
     });
 
